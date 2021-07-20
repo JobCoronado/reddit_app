@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
+import theme from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,14 +16,18 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "700",
-    fontSize: 18,
-    color: "#222222",
+    fontSize: theme.fontSizes.subheading,
+    color: theme.colors.textPrimary,
     marginVertical: 8,
   },
   data: {
     flex: 3,
     marginLeft: 10,
-    alignItems: "flex-end",
+  },
+  created: {
+    fontSize: theme.fontSizes.body,
+    color: theme.colors.textSecondary,
+    alignSelf: "flex-end",
   },
   social: {
     flex: 0,
@@ -31,6 +36,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   text: {
-    color: "#222222",
+    fontSize: theme.fontSizes.body,
+    color: theme.colors.textSecondary,
   },
 });

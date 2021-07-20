@@ -1,21 +1,35 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Item from "./src/components/Tile";
-
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { getPostByCategory } from "./src/api/services/posts/getPostByCategory";
+import Post, { IPost } from "./src/components/Post";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+dayjs.extend(relativeTime);
 export default function App() {
-  const data = {
-    pathImage:
-      "https://a.thumbs.redditmedia.com/9fuHmWFDneUpPq155LnK0HRSpez08j5RcYDrim1SZ04.jpg",
-    createAt: "7 minutes ago",
-    title: "Saw this piece of thread fallen on the floor.",
-    autor: "t2_5tldv43l",
-    score: 10,
-    numberComments: 10,
-  };
+  const [posts, setPosts] = useState<IPost[]>([]);
+  useEffect(() => {
+    (async () => {
+      const resPosts = (await getPostByCategory({ category: "new" })).map(
+        ({ data }) => ({
+          pathImage: data.thumbnail,
+          createAt: data.created,
+          title: data.title,
+          autor: data.author,
+          score: data.score,
+          numComments: data.num_comments,
+        })
+      );
+      setPosts(resPosts);
+    })();
+  }, []);
   return (
     <View style={styles.container}>
-      <Item data={data} />
+      <FlatList
+        data={posts}
+        ItemSeparatorComponent={() => <Text> </Text>}
+        renderItem={({ item: post, index }) => <Post key={index} data={post} />}
+      />
       <StatusBar style="auto" />
     </View>
   );
@@ -25,7 +39,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
