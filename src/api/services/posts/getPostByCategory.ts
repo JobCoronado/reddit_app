@@ -25,6 +25,7 @@ export interface IPost {
   created: number;
   score: number;
   num_comments: number;
+  permalink: string;
 }
 
 export interface IGetPostParams {
